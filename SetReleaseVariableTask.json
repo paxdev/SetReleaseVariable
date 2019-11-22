@@ -1,0 +1,121 @@
+{
+    "tasks": [{
+            "environment": {},
+            "displayName": "Set Release Variable",
+            "alwaysRun": false,
+            "continueOnError": false,
+            "condition": "succeeded()",
+            "enabled": true,
+            "timeoutInMinutes": 0,
+            "inputs": {
+                "targetType": "inline",
+                "filePath": "",
+                "arguments": "",
+                "script": "$ReleaseVariableName = '$(ReleaseVariableName)'\n$ValueToSet = '$(ValueToSet)'\n\n#Set API URL\n$apiUrl = ('{0}{1}/_apis/release/releases/{2}?api-version=5.0' -f $($env:SYSTEM_TEAMFOUNDATIONSERVERURI), $($env:SYSTEM_TEAMPROJECTID), $($env:RELEASE_RELEASEID)  )\n\nWrite-Output('Getting Release Definition')\n$Release = Invoke-RestMethod -Uri $apiUrl -Headers @{\n    Authorization = \"Bearer $env:SYSTEM_ACCESSTOKEN\"\n}\n\n#Update StageVar with new value\n$Release.variables.$ReleaseVariableName.value = $ValueToSet\n\nWrite-Output ('Updating Release Definition')\n$json = @($release) | ConvertTo-Json -Depth 99\n$UpdateResponse = Invoke-RestMethod -Uri $apiUrl -Method Put -Body $json -ContentType \"application/json\" -Headers @{Authorization = \"Bearer $env:SYSTEM_ACCESSTOKEN\" }\n\nWrite-Output \"Variable $ReleaseVariableName was set to $ValueToSet\" \n",
+                "errorActionPreference": "stop",
+                "failOnStderr": "false",
+                "ignoreLASTEXITCODE": "false",
+                "pwsh": "false",
+                "workingDirectory": ""
+            },
+            "task": {
+                "id": "e213ff0f-5d5c-4791-802d-52ea3e7be1f1",
+                "versionSpec": "2.*",
+                "definitionType": "task"
+            }
+        }
+    ],
+    "runsOn": ["Agent", "DeploymentGroup"],
+    "revision": 1,
+    "createdBy": {
+        "displayName": "paxdev"
+    },
+    "createdOn": "2019-11-22T13:25:43.843Z",
+    "modifiedBy": {
+        "displayName": "paxdev"
+    },
+    "modifiedOn": "2019-11-22T13:25:43.843Z",
+    "id": "0750420b-52eb-40ed-b8eb-72a5007d628b",
+    "name": "Set Release Variable",
+    "version": {
+        "major": 1,
+        "minor": 0,
+        "patch": 0,
+        "isTest": false
+    },
+    "iconUrl": "https://cdn.vsassets.io/v/M160_20191119.13/_content/icon-meta-task.png",
+    "friendlyName": "Set Release Variable",
+    "description": "Set a Release Variable $(ReleaseVariableName) to value $(ValueToSet) to allow variables to be shared between jobs and stages in a release.",
+    "category": "Utility",
+    "definitionType": "metaTask",
+    "author": "paxdev",
+    "demands": [],
+    "groups": [],
+    "inputs": [{
+            "aliases": [],
+            "options": {},
+            "properties": {},
+            "name": "$env:RELEASE_RELEASEID",
+            "label": "$env:RELEASE_RELEASEID",
+            "defaultValue": "$env:RELEASE_RELEASEID",
+			"visibleRule": "1 = 2",
+            "required": true,
+            "type": "string",
+            "helpMarkDown": "Required by Powershell script. Do not amend!",
+            "groupName": ""
+        }, {
+            "aliases": [],
+            "options": {},
+            "properties": {},
+            "name": "$env:SYSTEM_TEAMFOUNDATIONSERVERURI",
+            "label": "$env:SYSTEM_TEAMFOUNDATIONSERVERURI",
+            "defaultValue": "$env:SYSTEM_TEAMFOUNDATIONSERVERURI",
+			"visibleRule": "1 = 2",
+            "required": true,
+            "type": "string",
+            "helpMarkDown": "Required by Powershell script. Do not amend!",
+            "groupName": ""
+        }, {
+            "aliases": [],
+            "options": {},
+            "properties": {},
+            "name": "$env:SYSTEM_TEAMPROJECTID",
+            "label": "$env:SYSTEM_TEAMPROJECTID",
+            "defaultValue": "$env:SYSTEM_TEAMPROJECTID",
+			"visibleRule": "1 = 2",
+            "required": true,
+            "type": "string",
+            "helpMarkDown": "Required by Powershell script. Do not amend!",
+            "groupName": ""
+        }, {
+            "aliases": [],
+            "options": {},
+            "properties": {},
+            "name": "ReleaseVariableName",
+            "label": "ReleaseVariableName",
+            "defaultValue": "",
+            "required": true,
+            "type": "string",
+            "helpMarkDown": "The name of the variable",
+            "groupName": ""
+        }, {
+            "aliases": [],
+            "options": {},
+            "properties": {},
+            "name": "ValueToSet",
+            "label": "ValueToSet",
+            "defaultValue": "",
+            "required": true,
+            "type": "string",
+            "helpMarkDown": "The value to set",
+            "groupName": ""
+        }
+    ],
+    "satisfies": [],
+    "sourceDefinitions": [],
+    "dataSourceBindings": [],
+    "instanceNameFormat": "Task group: Set Release Variable $($env:RELEASE_RELEASEID)",
+    "preJobExecution": {},
+    "execution": {},
+    "postJobExecution": {}
+}
