@@ -17,3 +17,6 @@ To use:
 1. Add the task to a Release Job. 
 1. Set the ReleaseVariableName and ValueToSet parameters
 1. From this point on in any job or stage you can access the value of your Release Variable in the normal way.
+
+#To-Do
+Astute observers will note that this assumes a happy path. Ideally the task should elegantly recover from situations where it can't find or set the variable.
