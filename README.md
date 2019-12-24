@@ -11,6 +11,8 @@ I followed <a href="https://medium.com/objectsharp/how-to-hide-a-task-group-para
 
 To use:
 
+1. Go to `Pipelines` \ `Task Groups` in your project.
+1. Click on `Import a Task Group` then `Browse` to `SetReleaseVariable.json` and click `OK`.
 1. Create a Release Variable you want to amend
 1. Go to your Project's task groups and Import the Json
 1. Ensure that your organisation's `Project Collection Build Service` has the `Pipelines\Manage Build Resources` permission set to `Allow`
